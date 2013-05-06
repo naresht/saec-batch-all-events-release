@@ -1,0 +1,16 @@
+<a:OutboundIndividualAddressResearches xmlns:a="http://saec.bfds.com/schema/infoage">
+
+    <a:IndividualAddressResearch>
+        <a:inputRecord>test</a:inputRecord>
+        <a:userRef>10000001</a:userRef>
+        <a:ssn>123412341</a:ssn>
+        <a:firstName>Bob</a:firstName>
+        <a:middleName>A</a:middleName>
+        <a:lastName>Sheldon</a:lastName>
+        <a:streetAddress>university</a:streetAddress>
+        <a:city>boston</a:city>
+        <a:state>MA</a:state>
+        <a:zipCode>02139</a:zipCode>
+    </a:IndividualAddressResearch>
+
+ </a:OutboundIndividualAddressResearches>  

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+	   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <job id="OutboundDomesticTaxRecJob" xmlns="http://www.springframework.org/schema/batch" >
+        <validator ref="fileExportParametersValidator"/>
+        <step id="OutboundDomesticTaxRecJobStep">
+            <tasklet transaction-manager="batchFilesTransactionManager"
+                     start-limit="10">
+                <chunk reader="damascoOutRecItemReader"
+                	  processor="damscoOutRecProcessor"
+                       writer="damascoOutRecItemWriter"
+                       commit-interval="100"
+                       retry-policy="retryPolicy"
+                       skip-limit="10">
+                    <skippable-exception-classes>
+                        <include class="java.lang.Exception" />
+                        <include class="java.net.ConnectException" />
+                        <include class="java.lang.NullPointerException" />
+                    </skippable-exception-classes>
+                </chunk>
+                <listeners>
+                    <listener ref="fileRecordStepListener" />
+                    <listener ref="retryListener" />
+                    <listener ref="defaultStepExecutionListener" />
+                </listeners>
+            </tasklet>
+        </step>
+    </job>
+    
+   <bean id="damascoOutRecItemReader" class="org.springframework.batch.item.database.JpaPagingItemReader" scope="step"
+          p:entityManagerFactory-ref="batchFilesEntityManagerFactory"
+          p:queryProvider-ref="damascoOutItemReaderQueryProvider"
+          p:pageSize="100" />
+          
+  <bean id="damascoOutItemReaderQueryProvider" class="org.springframework.batch.item.database.orm.DefaultFileRecordQueryProvider" scope="step"
+          p:entityClass="com.bfds.saec.batch.file.domain.out.damasco_domestic.OutboundDomesticTaxRec" />
+  
+   <bean id="damscoOutRecProcessor" class="com.bfds.saec.batch.file.domain.out.damasco_domestic.OutboundDomesticTaxFileExportProcessor" scope="step"/>       
+          
+   	<bean id="damascoOutRecItemWriter" class="org.springframework.batch.item.file.FlatFileItemWriter" scope="step">
+		<property name="resource" value="#{jobParameters[outputResource]}" />
+		 <property name="lineAggregator">
+			   <bean class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
+				<property name="delimiter" value=","/>
+				<property name="fieldExtractor">
+					<bean class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
+						<property name="names" value="status,referenceNo,taxEntity,checkNumber,jobExecutionId,itemNumber,originalAccountType,
+						name_1,name_2,name_3,name_4,address_1,address_2,address_3,city,state,zip,
+						countryOfResidency,dobasString,usCitizen,tin,w9Received,w8Received,w8FormType,part2Completed,deceasedFlag,
+						withholdingRequest,federalWithholding,dateSentasString,totalPaymentAmount,paymentComp1,paymentComp2,paymentComp3,
+						stateOfResidency,taxesBasedOn,federalTax,stateTax,interestFederalTax,interestStateTax,disposition,comment,error,
+						organizationOrIndividual"/>					
+					</bean>
+				</property>
+			</bean>
+		</property>
+		  <property name="headerCallback" ref="headerCallBack" /> 
+	</bean>
+	
+		<bean id="headerCallBack" class="com.bfds.saec.batch.file.domain.out.damasco_domestic.DomesticTaxRecHeaderCallback" 
+          p:queryProvider-ref="damascoOutItemReaderQueryProvider"	/>
+		
+   
+</beans>

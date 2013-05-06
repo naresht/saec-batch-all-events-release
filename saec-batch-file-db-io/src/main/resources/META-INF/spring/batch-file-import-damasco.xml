@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+	   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <job id="DamascoInRecJob" xmlns="http://www.springframework.org/schema/batch" >
+        <validator ref="fileImportParametersValidator"/>
+        <step id="DamascoInRecJobStep">
+            <tasklet transaction-manager="batchFilesTransactionManager"
+                     start-limit="10">
+                <chunk reader="damascofileRecordItemReader"
+                       processor="inboundDomesticTaxRecProcessor"
+                       writer="fileRecordItemWriter"
+                       commit-interval="100"
+                       retry-policy="retryPolicy"
+                       skip-limit="10">
+                    <skippable-exception-classes>
+                        <include class="java.lang.Exception" />
+                        <include class="java.net.ConnectException" />
+                        <include class="java.lang.NullPointerException" />
+                    </skippable-exception-classes>
+                </chunk>
+                <listeners>
+                    <listener ref="fileRecordStepListener" />
+                    <listener ref="retryListener" />
+                    <listener ref="defaultStepExecutionListener" />
+                </listeners>
+            </tasklet>
+        </step>
+    </job>
+    
+    <bean id="damascofileRecordItemReader" class="org.springframework.batch.item.file.FlatFileItemReader" scope="step">
+		<property name="lineMapper">
+			<bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+				<property name="lineTokenizer">
+					<bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+						<property name="delimiter" value=","/>
+						<property name="names" value="status,referenceNo,taxEntity,checkNumber,batchNumber,itemNumber,originalAccountType,
+						name1,name2,name3,name4,addressLine1,addressLine2,addressLine3,city,state,zip,
+						countryOfTaxResidency,dateOfBirth,usCitizen,tin,w9Recived,w8Recived,w8FormType,part2Completed,deceasedFlag,
+						withHoldingRequest,federalWithHolding,reissueDate,totalPayment,paymentComp1,paymentComp2,paymentComp3,
+						stateOfResidency,taxesBasedOn,federalTax,stateTax,interestFederaltax,interestStatetax,disposition,comment,error,
+						organizationOrIndividual" />
+					</bean>
+				</property>
+				<property name="fieldSetMapper">
+					<bean class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+						<property name="targetType" value="com.bfds.saec.batch.file.domain.in.damasco_domestic.DamascoInRec" /> 	
+						<property name="customEditors">
+							<map>
+							<entry key="java.util.Date">
+							<bean
+							class="org.springframework.beans.propertyeditors.CustomDateEditor">
+							<constructor-arg>
+							<bean class="java.text.SimpleDateFormat">
+							<constructor-arg value="MM/dd/yyyy" />
+							</bean>
+							</constructor-arg>
+							<constructor-arg value="true" />
+							</bean>
+							</entry>
+							</map>
+						</property>
+						
+					</bean>
+				</property>
+			</bean>
+		</property>
+		<property name="linesToSkip" value="1"/>
+	
+		<property name ="skippedLinesCallback" ref="damascoHeaderCopyCallback"/>
+		
+		<property name="resource" value="#{jobParameters[inputResource]}" />
+	</bean>
+	
+	<bean id="damascoHeaderCopyCallback"
+		class="com.bfds.saec.batch.file.domain.in.damasco_domestic.HeaderCallBackHandler" scope="step"/>
+		
+		  <bean id="inboundDomesticTaxRecProcessor" class="com.bfds.saec.batch.file.domain.in.damasco_domestic.InboundDomesticTaxRecProcessor" scope="step">
+          </bean>
+   
+</beans>

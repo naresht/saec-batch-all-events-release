@@ -1,0 +1,19 @@
+
+
+    <a:CorporateAddressResearch xmlns:a="http://saec.bfds.com/schema/infoage">
+        <a:hitIndicator>Y</a:hitIndicator>
+        <a:partialAddressIndicator>P</a:partialAddressIndicator>
+        <a:matchAnalysisTag></a:matchAnalysisTag>
+        <a:userRef>10000001</a:userRef>
+        <a:companyName>Boston Financial</a:companyName>
+        <a:FEIN>9</a:FEIN>
+        <a:phoneAreaCode>617</a:phoneAreaCode>
+        <a:phone>1231234</a:phone>
+        <a:phoneExt>123</a:phoneExt>
+        <a:address>Crown Colony Dr</a:address>
+        <a:city>Quincy</a:city>
+        <a:state>MA</a:state>
+        <a:zipCode>02139</a:zipCode>
+        <a:addressDateReported>201101--</a:addressDateReported>
+    </a:CorporateAddressResearch>
+    

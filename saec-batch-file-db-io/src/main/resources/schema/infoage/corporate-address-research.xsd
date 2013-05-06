@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.0"
+        xmlns="http://saec.bfds.com/schema/infoage"
+        targetNamespace="http://saec.bfds.com/schema/infoage"
+        elementFormDefault="qualified">
+
+    <xs:annotation>
+        <xs:documentation xml:lang="en">Info Age Address Research Schema for Corporate Accounts.</xs:documentation>
+    </xs:annotation>
+
+
+    <xs:element name="CorporateAddressResearch" >
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="OFACIndicator" type="corpOFACHitIndicatorType" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">OFAC Indicator</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <!-- Match Indicators and Tags -->
+                <xs:element name="hitIndicator" type="hitIndicatorCorpType">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">Hit Indicator</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="partialAddressIndicator" type="partialAddressType">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">Match Indicator</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="matchAnalysisTag" type="corpMatchAnalysisType" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">Match Analysis Tag</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <!-- Contact Info -->
+                <xs:element name="userRef">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">User Reference</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="24"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="companyName">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">Company Name</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="60"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="FEIN" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">FEIN</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:pattern value="([0-9]{0,9})?"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="phoneAreaCode" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">Phone Area code</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:pattern value="([0-9]{3})?"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="phone" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">Phone number</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:pattern value="([0-9]{7})?"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="phoneExt" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">Phone extension</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:pattern value="([0-9]{0,5})?"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+
+                <!-- Address -->
+                <xs:element name="address" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">Address</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="48"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="city" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">Mailing address city.</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="27"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="state" type="CorpUSState" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">Mailing address state</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="zipCode" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">Mailing address zip code</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:pattern value="([0-9]{5})?(-[0-9]{4})?"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="addressDateReported"   minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">Address Date Reported</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:pattern value="(([12][0-9]{3})(0[1-9]|1[0-2])--)?"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:simpleType name="CorpUSState">
+        <xs:restriction base="xs:string">
+            <!-- ALABAMA -->
+            <xs:enumeration value="AL"/>
+            <!-- ALASKA -->
+            <xs:enumeration value="AK"/>
+            <!-- ARIZONA -->
+            <xs:enumeration value="AZ"/>
+            <!-- ARKANSAS -->
+            <xs:enumeration value="AR"/>
+            <!-- CALIFORNIA -->
+            <xs:enumeration value="CA"/>
+            <!-- COLORADO -->
+            <xs:enumeration value="CO"/>
+            <!-- CONNECTICUT -->
+            <xs:enumeration value="CT"/>
+            <!-- DELAWARE -->
+            <xs:enumeration value="DE"/>
+            <!-- DISTRICT OF COLUMBIA -->
+            <xs:enumeration value="DC"/>
+            <!-- FLORIDA -->
+            <xs:enumeration value="FL"/>
+            <!-- GEORGIA -->
+            <xs:enumeration value="GA"/>
+            <!-- HAWAII -->
+            <xs:enumeration value="HI"/>
+            <!-- IDAHO -->
+            <xs:enumeration value="ID"/>
+            <!-- ILLINOIS -->
+            <xs:enumeration value="IL"/>
+            <!-- INDIANA -->
+            <xs:enumeration value="IN"/>
+            <!-- IOWA -->
+            <xs:enumeration value="IA"/>
+            <!-- KANSAS -->
+            <xs:enumeration value="KS"/>
+            <!-- KENTUCKY -->
+            <xs:enumeration value="KY"/>
+            <!-- LOUISIANA -->
+            <xs:enumeration value="LA"/>
+            <!-- MAINE -->
+            <xs:enumeration value="ME"/>
+            <!-- MARYLAND -->
+            <xs:enumeration value="MD"/>
+            <!-- MASSACHUSETTS -->
+            <xs:enumeration value="MA"/>
+            <!-- MICHIGAN -->
+            <xs:enumeration value="MI"/>
+            <!-- MINNESOTA -->
+            <xs:enumeration value="MN"/>
+            <!-- MISSISSIPPI -->
+            <xs:enumeration value="MS"/>
+            <!-- MISSOURI -->
+            <xs:enumeration value="MO"/>
+            <!-- MONTANA -->
+            <xs:enumeration value="MT"/>
+            <!-- NEBRASKA -->
+            <xs:enumeration value="NE"/>
+            <!-- NEVADA -->
+            <xs:enumeration value="NV"/>
+            <!-- NEW HAMPSHIRE -->
+            <xs:enumeration value="NH"/>
+            <!-- NEW JERSEY -->
+            <xs:enumeration value="NJ"/>
+            <!-- NEW MEXICO -->
+            <xs:enumeration value="NM"/>
+            <!-- NEW YORK -->
+            <xs:enumeration value="NY"/>
+            <!-- NORTH CAROLINA -->
+            <xs:enumeration value="NC"/>
+            <!-- NORTH DAKOTA -->
+            <xs:enumeration value="ND"/>
+            <!-- OHIO -->
+            <xs:enumeration value="OH"/>
+            <!-- OKLAHOMA -->
+            <xs:enumeration value="OK"/>
+            <!-- OREGON -->
+            <xs:enumeration value="OR"/>
+            <!-- PALAU -->
+            <xs:enumeration value="PW"/>
+            <!-- PENNSYLVANIA -->
+            <xs:enumeration value="PA"/>
+            <!-- PUERTO RICO -->
+            <xs:enumeration value="PR"/>
+            <!-- RHODE ISLAND -->
+            <xs:enumeration value="RI"/>
+            <!-- SOUTH CAROLINA -->
+            <xs:enumeration value="SC"/>
+            <!-- SOUTH DAKOTA -->
+            <xs:enumeration value="SD"/>
+            <!-- TENNESSEE -->
+            <xs:enumeration value="TN"/>
+            <!-- TEXAS -->
+            <xs:enumeration value="TX"/>
+            <!-- UTAH -->
+            <xs:enumeration value="UT"/>
+            <!-- VERMONT -->
+            <xs:enumeration value="VT"/>
+            <!-- VIRGIN ISLANDS -->
+            <xs:enumeration value="VI"/>
+            <!-- VIRGINIA -->
+            <xs:enumeration value="VA"/>
+            <!-- WASHINGTON -->
+            <xs:enumeration value="WA"/>
+            <!-- WEST VIRGINIA -->
+            <xs:enumeration value="WV"/>
+            <!-- WISCONSIN -->
+            <xs:enumeration value="WI"/>
+            <!-- WYOMING -->
+            <xs:enumeration value="WY"/>
+            <xs:enumeration value=""/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="hitIndicatorCorpType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Y"/>
+            <xs:enumeration value="N"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="partialAddressType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="P"/>
+            <xs:enumeration value=""/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="corpMatchAnalysisType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="A"/>
+            <xs:enumeration value=""/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="corpOFACHitIndicatorType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="O"/>
+            <xs:enumeration value=""/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd">
+
+	<tx:annotation-driven mode="aspectj"
+		transaction-manager="batchFilesTransactionManager" />
+
+
+	<context:property-placeholder
+		location="classpath:/META-INF/spring/default-batch-files-environment.properties,classpath:/META-INF/spring/${environment.type:saec}-batch-files-environment.properties"
+		system-properties-mode="OVERRIDE" ignore-unresolvable="true" />
+
+	<import resource="classpath*:/META-INF/spring/batch-file-applicationContext.xml" />
+
+	<import resource="classpath*:/META-INF/spring/saec-config-validaton.xml"/>
+
+	<bean class="com.bfds.saec.batch.file.JobConfigRepositoryInitializer" />
+
+	<bean id="batchFilesEntityManagerFactory" name="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+		p:packagesToScan-ref="batchFilesPackagesToScan" p:dataSource-ref="batchFilesDataSource"
+		p:jpaPropertyMap-ref="batchFilesJpaPropertyMap">
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
+				p:generateDdl="false" p:showSql="false" />
+		</property>
+		<property name="jpaDialect">
+			<bean id="hibernateJpaDialect"
+				class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+		</property>
+	</bean>
+
+</beans>

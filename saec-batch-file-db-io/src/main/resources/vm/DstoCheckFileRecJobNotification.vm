@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<body>
+<table>
+#foreach( $vo in $notificationVoList )
+    <tr>
+        <td>File Type</td>
+        <td>$vo.fileType</td>
+    </tr>
+    <tr>
+        <td>File Date</td>
+        <td>$vo.fileDate</td>
+    </tr>
+    #if($vo.fileType == "CHECKFILE")	
+   		<tr>
+        	<td>Account Total Amount</td>
+        	<td>$vo.accountTotalAmount</td>
+    	</tr>
+    #end
+    <tr>
+        <td>Account Total Items</td>
+        <td>$vo.accountTotalItems</td>
+    </tr>
+#end
+</table>
+</body>
+</html>

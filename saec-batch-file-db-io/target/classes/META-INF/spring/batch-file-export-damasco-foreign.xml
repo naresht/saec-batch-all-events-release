@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+	   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <job id="ForeignTaxOutRecJob" xmlns="http://www.springframework.org/schema/batch" >
+        <validator ref="fileExportParametersValidator"/>
+        <step id="OutboundForeignTaxRecJobStep">
+            <tasklet transaction-manager="batchFilesTransactionManager"
+                     start-limit="10">
+                <chunk reader="foreignTaxOutRecItemReader"
+                	   processor="foreignTaxOutRecItemProcessor"
+                       writer="foreignTaxOutRecItemWritter"
+                       commit-interval="100"
+                       retry-policy="retryPolicy"
+                       skip-limit="10">
+                    <skippable-exception-classes>
+                        <include class="java.lang.Exception" />
+                        <include class="java.net.ConnectException" />
+                        <include class="java.lang.NullPointerException" />
+                    </skippable-exception-classes>
+                </chunk>
+                <listeners>
+                    <listener ref="fileRecordStepListener" />
+                    <listener ref="retryListener" />
+                    <listener ref="defaultStepExecutionListener" />
+                </listeners>
+            </tasklet>
+        </step>
+    </job>
+    
+   <bean id="foreignTaxOutRecItemReader" class="org.springframework.batch.item.database.JpaPagingItemReader" scope="step"
+          p:entityManagerFactory-ref="batchFilesEntityManagerFactory"
+          p:queryProvider-ref="foreignTaxOutItemReaderQueryProvider"
+          p:pageSize="100" />
+   
+   <bean id="foreignTaxOutItemReaderQueryProvider" class="org.springframework.batch.item.database.orm.DefaultFileRecordQueryProvider" scope="step"
+          p:entityClass="com.bfds.saec.batch.file.domain.out.damasco_foreign.ForeignTaxOutRec" />
+          
+  <bean id="foreignTaxOutRecItemProcessor" class="com.bfds.saec.batch.file.domain.out.damasco_foreign.OutboundDomascoForeignTaxFileExportProcessor" scope="step" />  
+  
+  
+   	<bean id="foreignTaxOutRecItemWritter" class="com.bfds.saec.batch.item.excel.ExcelItemWriter" scope="step">
+		<property name="resource" value="#{jobParameters[outputResource]}" />
+		 		 <property name="fieldExtractor">
+					<bean class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
+						<property name="names"
+								  value="foreignTaxClassification,fundAccount,bin,brokerId,parentReferenceNo,tin,
+						                              electionCode1,paymentComp1,electionCode2,paymentComp2,electionCode3,
+						                              paymentComp3,electionCode4,paymentComp4,electionCode5,paymentComp5,
+						                              parentReg1OrAdd1,parentReg2OrAdd2,parentReg3OrAdd3,parentReg4OrAdd4,
+						                              parentReg5OrAdd5,parentReg6OrAdd6,parentReg7OrAdd7,parentCity,parentState,parentZip,
+						                              parentZipCodeExt,parentCountry,altPayeeReg1OrAdd1,altPayeeReg2OrAdd2,
+						                              altPayeeReg3OrAdd3,altPayeeReg4OrAdd4,altPayeeReg5OrAdd5,altPayeeReg6OrAdd6,altPayeeReg7OrAdd7,
+						                              altPayeeCity,altPayeeState,altPayeeZip,altPayeeZipCodeExt,altPayeeCountry,
+						                              rightsFlag,notesFlag,employeeCode,checkNumber,disbursmentDate,checkVoid,futureUse,
+						                              checkDate,groupCode,restrictedBookShares,treassAccount,officerCode,sensitiveCode,
+						                              rightsDollors,rightsDollors2,batchNumber,itemNumber,altPayeeReferenceNo,taxesBasedOn,
+						                              withHoldingRequest,disposstion,federalTax,federalTaxInterest" />					
+					</bean>
+				</property>
+		  <property name="indexOfSheetName" value="0" />  			
+		  <property name="headerCallback" ref="foreignTaxheaderCallBack" /> 
+	</bean>
+	
+		<bean id="foreignTaxheaderCallBack" class="com.bfds.saec.batch.file.domain.out.damasco_foreign.ForeignTaxRecHeaderCallback" scope="step" />
+		
+   
+</beans>

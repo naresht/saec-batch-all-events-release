@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:OutboundCorporateAddressResearches xmlns:ns="http://saec.bfds.com/schema/infoage">
+    <ns:CorporateAddressResearch>
+        <ns:userRef>100000001</ns:userRef>
+        <ns:companyName>aaaaaaaaabbbbbbbb</ns:companyName>
+        <ns:streetAddress>2000 crown colony dr--1</ns:streetAddress>
+        <ns:city>Quincy--1</ns:city>
+        <ns:state>MA</ns:state>
+    </ns:CorporateAddressResearch>
+    <ns:CorporateAddressResearch>
+        <ns:userRef>10000002</ns:userRef>
+        <ns:companyName>aaaaaaaaabbbbbbbb</ns:companyName>
+        <ns:streetAddress>2000 crown colony dr--1</ns:streetAddress>
+        <ns:city>Quincy--1</ns:city>
+        <ns:state>MA</ns:state>
+    </ns:CorporateAddressResearch>
+</ns:OutboundCorporateAddressResearches>

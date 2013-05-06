@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.bfds.saec</groupId>
+    <artifactId>saec-batch-file-config-validaton</artifactId>
+	<version>1.1.0.RC2-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>SAEC Admin Configuration Validation</name>
+	<description>Application configuration validation components</description>
+
+    <parent>
+        <artifactId>seac-batch-modules-aggregator</artifactId>
+        <groupId>com.bfds.saec</groupId>
+        <version>1.1.0.RC2-SNAPSHOT</version>
+    </parent>
+
+	<scm>
+		<url>scm:git:git@github.com:BFDS/saec-batch-all-events.git</url>
+		<connection>scm:git:git@github.com:BFDS/saec-batch-all-events.git</connection>
+		<developerConnection>scm:git:git@github.com:BFDS/saec-batch-all-events.git</developerConnection>
+	</scm>
+	    
+    <dependencies>
+        <dependency>
+            <groupId>com.bfds</groupId>
+            <artifactId>saec-app-cfg-validation</artifactId>
+            <version>${saec-infrastructure-and-utils.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bfds.saec</groupId>
+            <artifactId>saec-scheduling-infrastructure</artifactId>
+            <version>${saec-infrastructure-and-utils.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bfds.saec</groupId>
+            <artifactId>saec-batch-file-db-io</artifactId>
+            <version>${project.version}</version>
+        </dependency>		
+        <dependency>
+            <groupId>com.bfds.saec</groupId>
+            <artifactId>saec-util</artifactId>
+            <version>${saec-infrastructure-and-utils.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+        </dependency>        
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.webflow</groupId>
+            <artifactId>spring-faces</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>cglib</groupId>
+                    <artifactId>cglib</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>dom4j</groupId>
+                    <artifactId>dom4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.0-api</artifactId>
+        </dependency>        
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+        </dependency>        
+    </dependencies>
+</project>

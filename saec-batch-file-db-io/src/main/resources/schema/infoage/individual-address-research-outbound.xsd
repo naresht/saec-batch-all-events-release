@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.0"
+        xmlns="http://saec.bfds.com/schema/infoage"
+        targetNamespace="http://saec.bfds.com/schema/infoage"
+        elementFormDefault="qualified">
+
+    <xs:annotation>
+        <xs:documentation xml:lang="en">Outbound Info Address Research Schema for Individual Accounts.</xs:documentation>
+    </xs:annotation>
+
+    <xs:element name="OutboundIndividualAddressResearches">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="IndividualAddressResearch" maxOccurs="unbounded" type="OutboundIndividualAddressResearch"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="OutboundIndividualAddressResearch">
+        <xs:sequence>
+
+            <xs:element name="inputRecord" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Input Record</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="userRef">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">User Reference</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="24"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="ssn" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Social Security Number</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="11"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="firstName" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">First name</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="15"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="middleName" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Middle Name</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="15"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="lastName" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Last name</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="25"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="streetAddress" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Street Address</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="35"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="city" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Mailing address city</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="30"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="state" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="([A-Z]{2})?"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="zipCode" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Mailing address zip code</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="([0-9]{5})?(-[0-9]{4})?"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
